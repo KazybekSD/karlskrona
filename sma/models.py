@@ -2,11 +2,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 from django.db import models
 
+
 # Create your models here.
-
-from django.db import models
-
-
 class Product(models.Model):
     title = models.CharField('Наименование продукции', max_length=70)
 
@@ -20,7 +17,7 @@ class Product(models.Model):
 
 
 class Equipment(models.Model):
-    title = models.CharField('Наименование оборудования', max_length=70)
+    title = models.CharField('Наименование оборудования', max_length=100)
     product = models.ForeignKey(Product, verbose_name='Тип продукции', on_delete=models.SET_NULL, null=True)
 
     class Meta:
@@ -97,8 +94,21 @@ class Service(models.Model):
     display_amount.short_description = 'Сумма'
 
 
+class GrCostItem(models.Model):
+    title = models.CharField('Наименование элемента затрат', max_length=70)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Элемента затрат'
+        verbose_name_plural = 'Элементы затрат'
+
+    def __str__(self):
+        return self.title
+
+
 class CostItem(models.Model):
-    title = models.CharField('Наименование статьи затрат', max_length=70)
+    title = models.CharField('Наименование статьи затрат', max_length=100)
+    gr_cost_item = models.ForeignKey(GrCostItem, verbose_name='Элемент затрат', on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ['id']
@@ -133,4 +143,3 @@ class Indicator(models.Model):
 
     def __str__(self):
         return self.title
-

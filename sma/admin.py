@@ -1,6 +1,5 @@
 from django.contrib import admin
-
-from sma.models import Product, Equipment, Model, ServiceType, Service, CostItem, Indicator, Measure
+from sma.models import Product, Equipment, Model, ServiceType, Service, GrCostItem, Indicator, Measure, CostItem
 
 
 # Register your models here.
@@ -32,9 +31,15 @@ class ServiceAdmin(admin.ModelAdmin):
     list_filter = ('service_type', 'model')
 
 
+@admin.register(GrCostItem)
+class GrCostItemAdmin(admin.ModelAdmin):
+    list_display = ('title', )
+
+
 @admin.register(CostItem)
 class CostItemAdmin(admin.ModelAdmin):
-    list_display = ('title', )
+    list_display = ('title', 'gr_cost_item')
+    list_filter = ('gr_cost_item', )
 
 
 @admin.register(Measure)
@@ -46,4 +51,3 @@ class MeasureAdmin(admin.ModelAdmin):
 class IndicatorAdmin(admin.ModelAdmin):
     list_display = ('title', 'value', 'measure')
     list_filter = ('measure', )
-
